@@ -1,0 +1,66 @@
+upstream fastcgi_codeigniter {
+  server  php-fpm:9000;
+}
+
+server {
+    listen 80;
+    server_name ${YOUR_DOMAIN};
+
+    ## Root and index files.
+    root /var/www/${YOUR_PROJECT_DIR}/public;
+    index  index.php index.html index.htm;
+
+    ## If no favicon exists return a 204 (no content error).
+    location = /favicon.ico {
+        try_files $uri =204;
+        log_not_found off;
+        access_log off;
+    }
+
+    ## Don't log robots.txt requests.
+    location = /robots.txt {
+        allow all;
+        log_not_found off;
+        access_log off;
+    }
+
+     ## Try the requested URI as files before handling it to PHP.
+    location / {
+
+        ## Regular PHP processing.
+        location ~ \.php$ {
+            try_files  $uri =404;
+            fastcgi_pass   fastcgi_codeigniter;
+            fastcgi_index  index.php;
+            fastcgi_param  SCRIPT_FILENAME    $document_root$fastcgi_script_name;
+            include        fastcgi_params;
+            fastcgi_read_timeout 1800;
+        }
+
+        ## Static files
+        location ~* \.(?:css|gif|htc|ico|js|jpe?g|png|swf)$ {
+            expires max;
+            log_not_found off;
+            ## No need to bleed constant updates. Send the all shebang in one
+            ## fell swoop.
+            tcp_nodelay off;
+            ## Set the OS file cache.
+            open_file_cache max=1000 inactive=120s;
+            open_file_cache_valid 45s;
+            open_file_cache_min_uses 2;
+            open_file_cache_errors off;
+        }
+        ## Keep a tab on the 'big' static files.
+        location ~* ^.+\.(?:ogg|pdf|pptx?)$ {
+            expires 30d;
+            ## No need to bleed constant updates. Send the all shebang in one
+            ## fell swoop.
+            tcp_nodelay off;
+        }
+    } # / location
+
+
+    if (!-e $request_filename ) {
+          rewrite ^(.*)$ /index.php last;
+    }        
+}

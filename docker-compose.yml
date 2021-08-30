@@ -1,0 +1,85 @@
+version: "3"
+
+volumes:
+  code:
+
+services:
+  # Nginx
+  webserver:
+    image: nginx:stable-alpine
+    container_name: webserver
+    volumes:
+      - code:/var/www
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    ports:
+      - "80:80"
+      - "443:443"
+    networks:
+      - app-network
+
+  # PHP
+  php-fpm:
+    build: php-fpm
+    container_name: php-fpm
+    working_dir: /var/www
+    environment:
+      - COMPOSER_MEMORY_LIMIT=-1
+    volumes:
+      - code:/var/www
+      - ./php-fpm/php-dev.ini:/usr/local/etc/php/php.ini
+    networks:
+      - app-network
+
+  # MySQL
+  mysql:
+    image: mysql/mysql-server:8.0.26
+    container_name: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: yes
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    networks:
+      - app-network
+
+  # Elasticsearch
+  elasticsearch:
+    image: elasticsearch:7.14.0
+    container_name: elasticsearch
+    environment:
+      - bootstrap.memory_lock=true
+      - xpack.security.enabled=false
+      - discovery.type=single-node
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    ports:
+      - 9200:9200
+    networks:
+      - app-network
+
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+
+# Set up Mutagen synchronization and forwarding.
+x-mutagen:
+  sync:
+    defaults:
+      ignore:
+        vcs: true
+    code:
+      alpha: "./project"
+      beta: "volume://code"
+      mode: "two-way-resolved"
+      ignore:
+        paths:
+          - "/**/.idea"
+          - "/**/generated"
+      permissions:
+        defaultFileMode: 0644
+        defaultDirectoryMode: 0755

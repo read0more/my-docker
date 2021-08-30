@@ -1,0 +1,7 @@
+/mysql/data/*
+/nginx/conf.d/*
+!/nginx/conf.d/app.conf
+!/nginx/conf.d/codeigniter.conf.sample
+!/nginx/conf.d/magento.conf.sample
+/project/*
+!/project/index.php
