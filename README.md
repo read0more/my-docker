@@ -28,18 +28,16 @@ docker rm -f [mutagen 컨테이너 이름]
 
 # Magento 설치 예시
 
-1. git clone https://github.com/magento/magento2.git
-2. php 컨테이너 접속
-3. (php 컨테이너)cd magento2
-4. (php 컨테이너)composer install
-5. mysql 컨테이너 접속
-6. (mysql 컨테이너)mysql -u root -p -e 'CREATE DATABASE my_magento;'
-7. (php 컨테이너)php bin/magento setup:install --currency=USD --base-url=http://my-magento.loc --language=en_US --timezone=Asia/Seoul --db-host=mysql --db-name=my_magento --db-user=root --elasticsearch-host=elasticsearch --backend-frontname=admin --admin-user=yk --admin-firstname=yk --admin-lastname=park --admin-email=read0more@test.com --admin-password=password
+1. php 컨테이너 접속
+2. (php 컨테이너)cd /var/www
+3. (php 컨테이너) composer create-project --repository-url=https://repo.magento.com/ magento/project-community-edition <install-directory-name>
+4. mysql 컨테이너 접속
+5. (mysql 컨테이너)mysql -u root -p -e 'CREATE DATABASE my_magento;'
+6. (php 컨테이너)php bin/magento setup:install --currency=USD --base-url=http://my-magento.loc --language=en_US --timezone=Asia/Seoul --db-host=mysql --db-name=my_magento --db-user=root --elasticsearch-host=elasticsearch --backend-frontname=admin --admin-user=yk --admin-firstname=yk --admin-lastname=park --admin-email=read0more@test.com --admin-password=password123
    - base-url, admin 정보와 같은 내용은 자신의 프로젝트의 정보에 맞춰 변경
-8. (클라이언트)chmod -R 777 var
-   - windows의 경우는 nginx 컨테이너 접속해서 프로젝트에 이동 후, chmod -R 777 var/
-9. php bin/magento setup:upgrade
-10. php bin/magento setup:di:compile
+7. (php 컨테이너)php bin/magento setup:upgrade
+8. (php 컨테이너)php bin/magento setup:di:compile
+9. (php 컨테이너)chmod -R 777 pub/\* var/\*
 
 # Codeigniter 설치 예시
 
