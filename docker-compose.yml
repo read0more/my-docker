@@ -82,5 +82,5 @@ x-mutagen:
           - "/**/.idea"
           - "/**/generated"
       permissions:
-        defaultFileMode: 0644
+        defaultFileMode: 0666
         defaultDirectoryMode: 0755
