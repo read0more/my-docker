@@ -5,9 +5,10 @@ volumes:
 
 services:
   # Nginx
-  webserver:
-    image: nginx:stable-alpine
-    container_name: webserver
+  nginx:
+    build: nginx
+    container_name: nginx
+    working_dir: /var/www
     volumes:
       - code:/var/www
       - ./nginx/conf.d:/etc/nginx/conf.d
@@ -70,17 +71,16 @@ networks:
 # Set up Mutagen synchronization and forwarding.
 x-mutagen:
   sync:
-    defaults:
-      ignore:
-        vcs: true
-    code:
+    analysis:
       alpha: "./project"
       beta: "volume://code"
       mode: "two-way-resolved"
       ignore:
+        vcs: true
         paths:
           - "/**/.idea"
           - "/**/generated"
-      permissions:
-        defaultFileMode: 0666
-        defaultDirectoryMode: 0755
+      configurationBeta:
+        permissions:
+          defaultFileMode: 666
+          defaultDirectoryMode: 755

@@ -43,6 +43,6 @@ RUN apk add --no-cache \
     && docker-php-ext-install -j$(nproc) bz2 \
     && docker-php-ext-enable bz2 \
     && rm -rf /tmp/*
-    
+ 
 EXPOSE 9000
 CMD ["php-fpm"]
