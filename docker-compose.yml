@@ -16,18 +16,22 @@ services:
       - "80:80"
       - "443:443"
     networks:
-      - app-network
+      app-network:
+        aliases:
+          - gentle-front.loc
 
   # PHP
   php-fpm:
     build: php-fpm
     container_name: php-fpm
     working_dir: /var/www
+    platform: linux/x86_64
     environment:
       - COMPOSER_MEMORY_LIMIT=-1
     volumes:
       - code:/var/www
       - ./php-fpm/php-dev.ini:/usr/local/etc/php/php.ini
+
     networks:
       - app-network
 
@@ -74,13 +78,15 @@ x-mutagen:
     analysis:
       alpha: "./project"
       beta: "volume://code"
-      mode: "two-way-resolved"
+      mode: "two-way-safe"
       ignore:
         vcs: true
         paths:
           - "/**/.idea"
           - "/**/generated"
+          - "/**/session"
       configurationBeta:
         permissions:
+          defaultOwner: id:501
           defaultFileMode: 666
           defaultDirectoryMode: 755

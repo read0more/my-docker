@@ -1,8 +1,14 @@
 FROM php:7.4-fpm-alpine
 WORKDIR "/application"
 
+RUN apk --no-cache add shadow && usermod -u 501 www-data && groupmod -g 501 www-data
+
 # Install bash
 RUN apk add --no-cache bash
+
+# Install 
+RUN apk add --no-cache libc6-compat gcompat
+RUN mkdir /lib64 && ln -s /lib/libc.musl-x86_64.so.1 /lib64/ld-linux-x86-64.so.2
 
 # Install php extension
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
@@ -44,5 +50,7 @@ RUN apk add --no-cache \
     && docker-php-ext-enable bz2 \
     && rm -rf /tmp/*
  
+USER www-data
+
 EXPOSE 9000
 CMD ["php-fpm"]
