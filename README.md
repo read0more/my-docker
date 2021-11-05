@@ -53,3 +53,7 @@ docker rm -f [mutagen 컨테이너 이름]
 5. 프로젝트 도메인을 /etc/hosts에 추가한다.
    - windows의 경우 C:\Windows\System32\drivers\etc\hosts
 6. .conf 내부의 ${YOUR_PROJECT_DIR}을 프로젝트 디렉토리명으로 바꾼다.
+
+# Apple chip이라 문제 나는 경우(NICE 실행모듈 등)
+
+1. docker-compose.yml의 PHP 항목의 platform 주석을 푼다

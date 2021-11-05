@@ -25,7 +25,7 @@ services:
     build: php-fpm
     container_name: php-fpm
     working_dir: /var/www
-    platform: linux/x86_64
+#    platform: linux/x86_64
     environment:
       - COMPOSER_MEMORY_LIMIT=-1
     volumes:
