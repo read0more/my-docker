@@ -25,7 +25,21 @@ services:
     build: php-fpm
     container_name: php-fpm
     working_dir: /var/www
-#    platform: linux/x86_64
+    environment:
+      - COMPOSER_MEMORY_LIMIT=-1
+    volumes:
+      - code:/var/www
+      - ./php-fpm/php-dev.ini:/usr/local/etc/php/php.ini
+
+    networks:
+      - app-network
+
+  # PHP for NICE module. NICE module doesn't support M1
+  php-fpm-x86_64:
+    build: php-fpm-x86_64
+    container_name: php-fpm-x86_64
+    working_dir: /var/www
+    platform: linux/x86_64
     environment:
       - COMPOSER_MEMORY_LIMIT=-1
     volumes:
@@ -78,15 +92,14 @@ x-mutagen:
     analysis:
       alpha: "./project"
       beta: "volume://code"
-      mode: "two-way-safe"
+      mode: "two-way-resolved"
       ignore:
         vcs: true
         paths:
           - "/**/.idea"
           - "/**/generated"
           - "/**/session"
-      configurationBeta:
-        permissions:
-          defaultOwner: id:501
-          defaultFileMode: 666
-          defaultDirectoryMode: 755
+      permissions:
+        defaultOwner: id:501
+        defaultFileMode: 666
+        defaultDirectoryMode: 755
