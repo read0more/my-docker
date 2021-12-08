@@ -1,4 +1,4 @@
-FROM php:7.4-fpm-alpine
+FROM php:8.0.13-fpm-alpine3.15
 WORKDIR "/application"
 
 RUN apk --no-cache add shadow && usermod -u 501 www-data && groupmod -g 501 www-data
