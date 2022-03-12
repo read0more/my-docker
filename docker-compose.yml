@@ -2,6 +2,7 @@ version: "3"
 
 volumes:
   code:
+  mysql-data:
 
 services:
   # Nginx
@@ -59,7 +60,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_ROOT_HOST: "%"
     volumes:
-      - ./mysql/data:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     networks:
       - app-network
 
