@@ -11,7 +11,6 @@ services:
     container_name: nginx
     working_dir: /var/www
     volumes:
-      - code:/var/www
       - ./nginx/conf.d:/etc/nginx/conf.d
     ports:
       - "80:80"
@@ -29,7 +28,6 @@ services:
     environment:
       - COMPOSER_MEMORY_LIMIT=-1
     volumes:
-      - code:/var/www
       - ./php-fpm/php-dev.ini:/usr/local/etc/php/php.ini
 
     networks:
@@ -44,7 +42,6 @@ services:
     environment:
       - COMPOSER_MEMORY_LIMIT=-1
     volumes:
-      - code:/var/www
       - ./php-fpm/php-dev.ini:/usr/local/etc/php/php.ini
 
     networks:
@@ -86,21 +83,3 @@ services:
 networks:
   app-network:
     driver: bridge
-
-# Set up Mutagen synchronization and forwarding.
-x-mutagen:
-  sync:
-    analysis:
-      alpha: "./project"
-      beta: "volume://code"
-      mode: "two-way-resolved"
-      ignore:
-        vcs: true
-        paths:
-          - "/**/.idea"
-          - "/**/generated"
-          - "/**/session"
-      permissions:
-        defaultOwner: id:501
-        defaultFileMode: 666
-        defaultDirectoryMode: 755
