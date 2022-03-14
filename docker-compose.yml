@@ -42,9 +42,9 @@ services:
     working_dir: /var/www
     platform: linux/x86_64
     environment:
-      - code:/var/www
       - COMPOSER_MEMORY_LIMIT=-1
     volumes:
+      - code:/var/www
       - ./php-fpm/php-dev.ini:/usr/local/etc/php/php.ini
 
     networks:
