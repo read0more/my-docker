@@ -11,6 +11,7 @@ services:
     container_name: nginx
     working_dir: /var/www
     volumes:
+      - code:/var/www
       - ./nginx/conf.d:/etc/nginx/conf.d
     ports:
       - "80:80"
@@ -28,6 +29,7 @@ services:
     environment:
       - COMPOSER_MEMORY_LIMIT=-1
     volumes:
+      - code:/var/www
       - ./php-fpm/php-dev.ini:/usr/local/etc/php/php.ini
 
     networks:
@@ -40,6 +42,7 @@ services:
     working_dir: /var/www
     platform: linux/x86_64
     environment:
+      - code:/var/www
       - COMPOSER_MEMORY_LIMIT=-1
     volumes:
       - ./php-fpm/php-dev.ini:/usr/local/etc/php/php.ini
@@ -56,8 +59,10 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_ROOT_HOST: "%"
+      DISPLAY: "10.200.160.111:0"
     volumes:
       - mysql-data:/var/lib/mysql
+      - /tmp/.X11-unix:/tmp/.X11-unix
     networks:
       - app-network
 
