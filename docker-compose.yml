@@ -59,10 +59,8 @@ services:
     environment:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_ROOT_HOST: "%"
-      DISPLAY: "10.200.160.111:0"
     volumes:
       - mysql-data:/var/lib/mysql
-      - /tmp/.X11-unix:/tmp/.X11-unix
     networks:
       - app-network
 
@@ -81,6 +79,19 @@ services:
         hard: -1
     ports:
       - 9200:9200
+    networks:
+      - app-network
+
+  # Ubuntu for GUI
+  ubuntu:
+    tty: true
+    build: ubuntu
+    container_name: ubuntu
+    working_dir: /var/www
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - code:/var/www
     networks:
       - app-network
 
