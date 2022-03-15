@@ -82,24 +82,24 @@ services:
     networks:
       - app-network
 
-#  # Ubuntu for GUI
-# It's useless...
-#  ubuntu:
-#    tty: true
-#    build: ubuntu
-#    security_opt:
-#      - seccomp:./chrome.json
-#    container_name: ubuntu
-#    working_dir: /var/www
-#    platform: linux/x86_64
-#    environment:
-##      - DISPLAY=${DISPLAY}
-#      - DISPLAY=10.200.160.111:0
-#    volumes:
-#      - code:/var/www
-#      - /tmp/.X11-unix:/tmp/.X11-unix
-#    networks:
-#      - app-network
+# Set up Mutagen synchronization and forwarding.
+x-mutagen:
+  sync:
+    analysis:
+      alpha: "./project"
+      beta: "volume://code"
+      mode: "two-way-resolved"
+      ignore:
+        vcs: true
+        paths:
+          - "/**/.idea"
+          - "/**/generated"
+          - "/**/session"
+      permissions:
+        defaultOwner: id:501
+        defaultFileMode: 666
+        defaultDirectoryMode: 755
+
 
 #Docker Networks
 networks:
