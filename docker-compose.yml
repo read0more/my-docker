@@ -85,20 +85,23 @@ services:
 # Set up Mutagen synchronization and forwarding.
 x-mutagen:
   sync:
-    analysis:
+    defaults:
+      ignore:
+        vcs: true
+    code:
       alpha: "./project"
       beta: "volume://code"
       mode: "two-way-resolved"
       ignore:
-        vcs: true
         paths:
           - "/**/.idea"
           - "/**/generated"
           - "/**/session"
+          - "/**/writable" # codeigniter
       permissions:
         defaultOwner: id:501
-        defaultFileMode: 666
-        defaultDirectoryMode: 755
+        defaultFileMode: 0666
+        defaultDirectoryMode: 0755
 
 
 #Docker Networks
