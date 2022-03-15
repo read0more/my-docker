@@ -3,27 +3,20 @@
 1. [Docker Desktop 설치](https://www.docker.com/products/docker-desktop)
 2. Mutagen 설치
    - 현재(2021/08/30) docker-compose와 연동되는건 베타버전 뿐이므로 베타버전 설치.
-   - [Mac 설치 참고](https://mutagen.io/documentation/introduction/installation)
-   - [Windows 설치](https://github.com/mutagen-io/mutagen/releases/tag/v0.12.0-beta5)
+   - [Mac 설치 참고](https://github.com/mutagen-io/mutagen-compose)
+   - [Windows 설치](https://github.com/mutagen-io/mutagen-compose/releases)
      - Windows의 경우 압축해제후 환경변수에 등록할 것.
 
 # 실행
 
 ```
-mutagen compose up -d
+mutagen-compose up -d
 ```
 
 # 종료
 
 ```
-mutagen compose down
-```
-
-windows의 경우 불안정하여 down이 제대로 되지 않는 경우가 있는데 그럴경우 다음과 같이 한다.
-
-```
-docker-compose down
-docker rm -f [mutagen 컨테이너 이름]
+mutagen-compose down
 ```
 
 # Magento 설치 예시
