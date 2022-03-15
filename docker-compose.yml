@@ -82,18 +82,24 @@ services:
     networks:
       - app-network
 
-  # Ubuntu for GUI
-  ubuntu:
-    tty: true
-    build: ubuntu
-    container_name: ubuntu
-    working_dir: /var/www
-    environment:
-      - DISPLAY=${DISPLAY}
-    volumes:
-      - code:/var/www
-    networks:
-      - app-network
+#  # Ubuntu for GUI
+# It's useless...
+#  ubuntu:
+#    tty: true
+#    build: ubuntu
+#    security_opt:
+#      - seccomp:./chrome.json
+#    container_name: ubuntu
+#    working_dir: /var/www
+#    platform: linux/x86_64
+#    environment:
+##      - DISPLAY=${DISPLAY}
+#      - DISPLAY=10.200.160.111:0
+#    volumes:
+#      - code:/var/www
+#      - /tmp/.X11-unix:/tmp/.X11-unix
+#    networks:
+#      - app-network
 
 #Docker Networks
 networks:

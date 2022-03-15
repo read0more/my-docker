@@ -5,3 +5,4 @@
 !/nginx/conf.d/magento.conf.sample
 /project/*
 !/project/index.php
+.idea
