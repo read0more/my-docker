@@ -47,6 +47,6 @@ mutagen-compose down
    - windows의 경우 C:\Windows\System32\drivers\etc\hosts
 6. .conf 내부의 ${YOUR_PROJECT_DIR}을 프로젝트 디렉토리명으로 바꾼다.
 
-# Apple chip이라 문제 나는 경우(NICE 실행모듈 등)
+# Apple chip을 지원하지 않는 모듈을 사용해야 할 경우(NICE 본인인증 실행모듈)
 
-1. docker-compose.yml의 PHP 항목의 platform 주석을 푼다
+1. nginx 설정에서 php를 php-fpm-x86_64 이미지를 사용한다
