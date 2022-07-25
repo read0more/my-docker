@@ -1,4 +1,4 @@
-FROM php:8.0.13-fpm-alpine3.15
+FROM php:8.1.8-fpm-alpine
 WORKDIR "/application"
 
 RUN apk --no-cache add shadow && usermod -u 501 www-data && groupmod -g 501 www-data
@@ -20,7 +20,7 @@ RUN chmod +x /usr/local/bin/install-php-extensions && sync && install-php-extens
 	sockets \
 	xsl \
 	zip \
-    xdebug \
+    xdebug-stable \
     opcache \
     APCu 
     

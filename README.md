@@ -1,22 +1,20 @@
 # Requirements
 
 1. [Docker Desktop 설치](https://www.docker.com/products/docker-desktop)
-2. Mutagen 설치
-   - 현재(2021/08/30) docker-compose와 연동되는건 베타버전 뿐이므로 베타버전 설치.
-   - [Mac 설치 참고](https://github.com/mutagen-io/mutagen-compose)
-   - [Windows 설치](https://github.com/mutagen-io/mutagen-compose/releases)
-     - Windows의 경우 압축해제후 환경변수에 등록할 것.
+2. Docker Desktop의 설정에서 Experimental Features탭의 Enable VirtioFS accelerated directory sharing 항목 체크
+ - 해당 기능이 없으면 container와 host간의 파일 공유가 끔찍하게 느려진다. 해당기능 못 쓸경우에는 [차선책](https://github.com/mutagen-io/mutagen-compose/releases)
+ - 차선책 사용할 경우는 docker-compose_mutagen.yml를 참고 해서 docker-compose.yml 작성할것
 
 # 실행
 
 ```
-mutagen-compose up -d
+docker-compose up -d
 ```
 
 # 종료
 
 ```
-mutagen-compose down
+docker-compose down
 ```
 
 # Magento 설치 예시

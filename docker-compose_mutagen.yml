@@ -1,6 +1,7 @@
 version: "3"
 
 volumes:
+  code:
   mysql-data:
 
 services:
@@ -10,13 +11,15 @@ services:
     container_name: nginx
     working_dir: /var/www
     volumes:
-      - ./project:/var/www
+      - code:/var/www
       - ./nginx/conf.d:/etc/nginx/conf.d
     ports:
       - "80:80"
       - "443:443"
     networks:
-      - app-network
+      app-network:
+        aliases:
+          - gentle-front.loc
 
   # PHP
   php-fpm:
@@ -26,7 +29,7 @@ services:
     environment:
       - COMPOSER_MEMORY_LIMIT=-1
     volumes:
-      - ./project:/var/www
+      - code:/var/www
       - ./php-fpm/php-dev.ini:/usr/local/etc/php/php.ini
 
     networks:
@@ -41,7 +44,7 @@ services:
     environment:
       - COMPOSER_MEMORY_LIMIT=-1
     volumes:
-      - ./project:/var/www
+      - code:/var/www
       - ./php-fpm/php-dev.ini:/usr/local/etc/php/php.ini
 
     networks:
@@ -78,6 +81,28 @@ services:
       - 9200:9200
     networks:
       - app-network
+
+# Set up Mutagen synchronization and forwarding.
+x-mutagen:
+  sync:
+    defaults:
+      ignore:
+        vcs: true
+    code:
+      alpha: "./project"
+      beta: "volume://code"
+      mode: "two-way-resolved"
+      ignore:
+        paths:
+          - "/**/.idea"
+          - "/**/generated"
+          - "/**/session"
+          - "/**/writable" # codeigniter
+      permissions:
+        defaultOwner: id:501
+        defaultFileMode: 0666
+        defaultDirectoryMode: 0755
+
 
 #Docker Networks
 networks:
